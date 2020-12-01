@@ -28,8 +28,7 @@ export default function Nav({ current }) {
                     <Link className={`navbar-item ${current === 'about' && 'is-active'}`} to="/about">About</Link>
                 </div>
                 <div className="navbar-end">
-                    <Link className={`navbar-item ${current === 'login' && 'is-active'}`} to="/login">Login</Link>
-                    <Link className={`navbar-item ${current === 'signup' && 'is-active'}`} to="/signup">Sign Up</Link>
+                    <Link className={`navbar-item ${current === 'login' && 'is-active'}`} to="/signin">Sign In</Link>
                 </div>
             </div>
         </nav>
