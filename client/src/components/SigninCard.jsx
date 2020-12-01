@@ -13,15 +13,12 @@ export default function SigninCard() {
         <div className="card">
           <div className="card-content">
             <div className="columns">
-
               <div className="column">
                 <LoginForm />
               </div>
-
               <div className="column">
                 <form onSubmit={handleSignupFormSubmit}></form>
               </div>
-
             </div>
           </div>
         </div>
