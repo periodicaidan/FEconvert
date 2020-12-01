@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 export default function Nav({ current }) {
     const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
 
+    const toggleBurgerMenu = () => setBurgerMenuOpen(!burgerMenuOpen);
+
     return (
         <nav className="navbar is-primary">
             <div className="navbar-brand">
@@ -14,7 +16,7 @@ export default function Nav({ current }) {
                     className={`navbar-burger burger ${burgerMenuOpen && 'is-active'}`}
                     aria-label="menu" 
                     aria-expanded="false"
-                    onClick={() => setBurgerMenuOpen(!burgerMenuOpen)}
+                    onClick={toggleBurgerMenu}
                 >
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
