@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import Notification from './Notification';
 
 const ffmpeg = createFFmpeg({ log: true });
 
@@ -10,16 +11,16 @@ const ffmpeg = createFFmpeg({ log: true });
 function notifyIfBrowserDoesNotSupportSharedArrayBuffer() {
   if (!window.SharedArrayBuffer) {
     return (
-      <div className="notification is-danger">
+      <Notification type="danger">
         Your browser does not support SharedArrayBuffer! FEconvert will not work.
-      </div>
+      </Notification>
     )
   }
 }
 
 /**
  * @param {File} inputFile 
- * @returns {string}
+ * @returns {Promise<string>}
  */
 async function convertToGif(inputFile) {
   ffmpeg.FS('writeFile', inputFile.name, await fetchFile(inputFile));
@@ -30,7 +31,6 @@ async function convertToGif(inputFile) {
 }
 
 /**
- * 
  * @param {string} newExtension 
  * @param {string} fileName 
  * @returns {string}
@@ -109,8 +109,15 @@ export default function MediaConverter(props) {
                   <button className={`button is-large is-primary ${ffmpegState.working && 'is-loading'}`} disabled={!formReady()}>Convert</button>
                 </div>
                 {outputFile && 
-                  <div className="contro">
-                    <a href={outputFile} role="button" download={replaceFileExtensionWith('gif', inputFile.name)} className="button is-large is-link">Download!</a>
+                  <div className="control">
+                    <a 
+                      href={outputFile} 
+                      role="button" 
+                      download={replaceFileExtensionWith('gif', inputFile.name)} 
+                      className="button is-large is-link"
+                    >
+                      Download!
+                    </a>
                   </div>
                 }
               </div>
