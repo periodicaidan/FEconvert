@@ -5,8 +5,8 @@ import { convertOptionsSubject } from './ConvertOptionsSubject';
 /**
  * @param {MediaType} mediaType 
  */
-function mediaTypeToOptionElement(mediaType) {
-  return <option value={mediaType.extension}>{mediaType.fullName} ({mediaType.abbreviation})</option>;
+function mediaTypeToOptionElement(key, mediaType) {
+  return <option value={key}>{mediaType.fullName} ({mediaType.abbreviation})</option>;
 }
 
 export default function ConvertOptions({ onSet }) {
@@ -28,10 +28,10 @@ export default function ConvertOptions({ onSet }) {
   switch (inputMediaNs) {
     case 'video':
       return <VideoConvertOptions dispatcher={optionsDispatcher} />;
-    // case 'audio':
-    //   return <AudioConvertOptions />;
-    // case 'image':
-    //   return <ImageConvertOptions />;
+    case 'audio':
+      return <AudioConvertOptions />;
+    case 'image':
+      return <ImageConvertOptions />;
     default:
       return null;
   }
@@ -42,16 +42,16 @@ function VideoConvertOptions({ dispatcher }) {
     <div className="field">
       <div className="control">
         <div className="select">
-          <select onChange={e => dispatcher({ format: e.target.value })}>
-            <option value="uncompressed">Uncompressed</option>
+          <select onChange={e => dispatcher({ mediaType: MediaTypes[e.target.value] })}>
+            <option value="uncompressed">Uncompressed</option> 
             <optgroup label="Image">
-              {Object.entries(MediaTypes.image).map(([, mediaType]) => mediaTypeToOptionElement(mediaType))}
+              {Object.entries(MediaTypes.image()).map(entry => mediaTypeToOptionElement(...entry))}
             </optgroup>
             <optgroup label="Video">
-              {Object.entries(MediaTypes.video).map(([, mediaType]) => mediaTypeToOptionElement(mediaType))}
+              {Object.entries(MediaTypes.video()).map(entry => mediaTypeToOptionElement(...entry))}
             </optgroup>
             <optgroup label="Audio">
-              {Object.entries(MediaTypes.audio).map(([, mediaType]) => mediaTypeToOptionElement(mediaType))}
+              {Object.entries(MediaTypes.audio()).map(entry => mediaTypeToOptionElement(...entry))}
             </optgroup>
           </select>
         </div>
@@ -72,4 +72,12 @@ function VideoConvertOptions({ dispatcher }) {
       </label>
     </div>
   </>;
+}
+
+function AudioConvertOptions() {
+  return <></>;
+}
+
+function ImageConvertOptions() {
+  return <></>;
 }

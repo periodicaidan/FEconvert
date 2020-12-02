@@ -29,5 +29,11 @@ const image = {
 };
 
 export default {
-  video, audio, image
-}
+  ...video, 
+  ...audio, 
+  ...image,
+
+  video: () => video,
+  audio: () => audio,
+  image: () => image,
+};
