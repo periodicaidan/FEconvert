@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LoginForm from './forms/LoginForm';
+import SignupForm from './forms/SignupForm';
 
 export default function SigninCard() {
 
@@ -17,7 +18,7 @@ export default function SigninCard() {
                 <LoginForm />
               </div>
               <div className="column">
-                <form onSubmit={handleSignupFormSubmit}></form>
+                <SignupForm />
               </div>
             </div>
           </div>
