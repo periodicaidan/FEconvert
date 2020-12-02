@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import Notification from './Notification';
+import Notification from '../Notification';
+import ConvertOptions from './ConvertOptions';
+import { InputMediaContext } from './MediaTypes';
+import { convertOptionsSubject } from './ConvertOptionsSubject';
 
 const ffmpeg = createFFmpeg({ log: true });
 
@@ -49,6 +52,7 @@ export default function MediaConverter(props) {
   });
   const [inputFile, setInputFile] = useState();
   const [outputFile, setOutputFile] = useState();
+  const [convertOptions, setConvertOptions] = useState();
 
   useEffect(() => {
     if (!ffmpegState.ready) {
@@ -56,6 +60,12 @@ export default function MediaConverter(props) {
         .then(() => setFFmpegState({ ...ffmpegState, ready: true }))
         .catch(console.error);      
     }
+  }, []);
+
+  useEffect(() => {
+    const convertOptionsSubscription = convertOptionsSubject.subscribe(setConvertOptions);
+
+    return convertOptionsSubscription.unsubscribe;
   }, []);
 
   const handleFileUpload = e => {
@@ -88,7 +98,13 @@ export default function MediaConverter(props) {
               <div className="field">
                 <div className="file has-name is-boxed is-fullwidth is-medium">
                   <label className="file-label">
-                    <input type="file" name="inputFile" className="file-input" onChange={handleFileUpload} />
+                    <input 
+                      type="file" 
+                      accept="image/*,video/*,audio/*" 
+                      name="inputFile" 
+                      className="file-input" 
+                      onChange={handleFileUpload}
+                    />
                     <span className="file-cta">
                       <span className="file-icon">
                         <i className="fas fa-upload"></i>
@@ -103,6 +119,10 @@ export default function MediaConverter(props) {
                   </label>
                 </div>
               </div>
+
+              <InputMediaContext.Provider value={inputFile?.type}>
+                <ConvertOptions />
+              </InputMediaContext.Provider>
 
               <div className="field is-grouped is-grouped-centered">
                 <div className="control">
