@@ -4,6 +4,7 @@ import Notification from '../Notification';
 import ConvertOptions from './ConvertOptions';
 import { InputMediaContext } from './MediaTypes';
 import { convertOptionsSubject } from './ConvertOptionsSubject';
+import NicelySpaced from '../NicelySpaced';
 
 const ffmpeg = createFFmpeg({ log: true });
 
@@ -89,62 +90,60 @@ export default function MediaConverter(props) {
   }
 
   return (
-    <div className="columns is-centered">
-      <div className="column is-half">
-        <div className="card">
-          <div className="card-content">
-            {notifyIfBrowserDoesNotSupportSharedArrayBuffer()}
-            <form onSubmit={convertUploadedFile}>
-              <div className="field">
-                <div className="file has-name is-boxed is-fullwidth is-medium">
-                  <label className="file-label">
-                    <input 
-                      type="file" 
-                      accept="image/*,video/*,audio/*" 
-                      name="inputFile" 
-                      className="file-input" 
-                      onChange={handleFileUpload}
-                    />
-                    <span className="file-cta">
-                      <span className="file-icon">
-                        <i className="fas fa-upload"></i>
-                      </span>
-                      <span className="file-label has-text-centered">
-                        Select a file...
-                      </span>
+    <NicelySpaced width="half">
+      <div className="card">
+        <div className="card-content">
+          {notifyIfBrowserDoesNotSupportSharedArrayBuffer()}
+          <form onSubmit={convertUploadedFile}>
+            <div className="field">
+              <div className="file has-name is-boxed is-fullwidth is-medium">
+                <label className="file-label">
+                  <input 
+                    type="file" 
+                    accept="image/*,video/*,audio/*" 
+                    name="inputFile" 
+                    className="file-input" 
+                    onChange={handleFileUpload}
+                  />
+                  <span className="file-cta">
+                    <span className="file-icon">
+                      <i className="fas fa-upload"></i>
                     </span>
-                    <span className="file-name">
-                      {inputFile?.name ?? 'No file selected'}
+                    <span className="file-label has-text-centered">
+                      Select a file...
                     </span>
-                  </label>
-                </div>
+                  </span>
+                  <span className="file-name">
+                    {inputFile?.name ?? 'No file selected'}
+                  </span>
+                </label>
               </div>
+            </div>
 
-              <InputMediaContext.Provider value={inputFile?.type}>
-                <ConvertOptions />
-              </InputMediaContext.Provider>
+            <InputMediaContext.Provider value={inputFile?.type}>
+              <ConvertOptions />
+            </InputMediaContext.Provider>
 
-              <div className="field is-grouped is-grouped-centered">
+            <div className="field is-grouped is-grouped-centered">
+              <div className="control">
+                <button className={`button is-large is-primary ${ffmpegState.working && 'is-loading'}`} disabled={!formReady()}>Convert</button>
+              </div>
+              {outputFile && 
                 <div className="control">
-                  <button className={`button is-large is-primary ${ffmpegState.working && 'is-loading'}`} disabled={!formReady()}>Convert</button>
+                  <a 
+                    href={outputFile} 
+                    role="button" 
+                    download={replaceFileExtensionWith('gif', inputFile.name)} 
+                    className="button is-large is-link"
+                  >
+                    Download!
+                  </a>
                 </div>
-                {outputFile && 
-                  <div className="control">
-                    <a 
-                      href={outputFile} 
-                      role="button" 
-                      download={replaceFileExtensionWith('gif', inputFile.name)} 
-                      className="button is-large is-link"
-                    >
-                      Download!
-                    </a>
-                  </div>
-                }
-              </div>
-            </form>
-          </div>
+              }
+            </div>
+          </form>
         </div>
       </div>
-    </div>
+    </NicelySpaced>
   );
 }
