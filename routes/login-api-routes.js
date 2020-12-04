@@ -40,38 +40,9 @@ module.exports = function(app) {
       res.status(401).json({});
     } else {
       // Otherwise send back the user's email and id
-      // Sending back a password, even a hashed password, isn't a good idea
       res.json({
-        id: req.user.id,
         username: req.body.username,
         email: req.user.email
-        
-      });
-    }
-  });
-
- // S3 ROUTES
-
-  app.post("api/image-upload", function(req, res) {
-    if (!req.user) {
-      // The user is not logged in, send back an empty object
-      res.status(401).json({});
-    } else {
-      singleUpload(req,res, function(err){
-        return res.json({'imageUrl': req.file.location})
-      });
-    }
-  })
-
-  app.get("/api/user_media", function(req, res) {
-    if (!req.user) {
-      // The user is not logged in, send back an empty object
-      res.status(401).json({});
-    } else {
-      // Otherwise send back the user's media and id
-      res.json({
-        id: req.user.id,
-        files : req.user.files
       });
     }
   });
