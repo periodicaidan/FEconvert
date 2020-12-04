@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
 import SigninPage from './pages/SigninPage';
+import FileBrowserPage from './pages/FileBrowserPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route exact path="/about" component={AboutPage} />
         <Route exact path="/signin" component={SigninPage} />
+        <Route path="/files" component={FileBrowserPage} />
       </Switch>
     </BrowserRouter>
   );
