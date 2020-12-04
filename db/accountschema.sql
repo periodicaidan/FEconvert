@@ -6,7 +6,7 @@ USE accounts_db;
 
 CREATE TABLE users (
 	
-	uuid VARCHAR(255) NOT NULL,
+	id INTEGER(255) NOT NULL AUTO_INCREMENT,
 
 	username VARCHAR(255) NOT NULL,
 
@@ -14,7 +14,7 @@ CREATE TABLE users (
 
 	password VARCHAR(255) NOT NULL,
     
-    PRIMARY KEY (uuid)
+    PRIMARY KEY (id)
 
 );
 
@@ -30,6 +30,6 @@ CREATE TABLE video_links (
     
     PRIMARY KEY (id),
 
-    FOREIGN KEY (userlink) REFERENCES users(uuid)
+    FOREIGN KEY (userlink) REFERENCES users(username)
 
 );

@@ -13,6 +13,7 @@ module.exports = function(app) {
   // otherwise send back an error
   app.post("/api/signup", function(req, res) {
     db.User.create({
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password
     })
@@ -39,8 +40,25 @@ module.exports = function(app) {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
       res.json({
-        email: req.user.email,
-        id: req.user.id
+        id: req.user.id,
+        username: req.body.username,
+        email: req.user.email
+        
+      });
+    }
+  });
+
+ 
+
+  app.get("/api/user_media", function(req, res) {
+    if (!req.user) {
+      // The user is not logged in, send back an empty object
+      res.status(401).json({});
+    } else {
+      // Otherwise send back the user's media and id
+      res.json({
+        id: req.user.id,
+        files : req.user.files
       });
     }
   });
