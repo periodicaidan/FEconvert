@@ -15,15 +15,15 @@ module.exports = function(app) {
     }
   })
 
-  app.get("/api/user_media", function(req, res) {
+  app.get("/api/user-media", function(req, res) {
     if (!req.user) {
       // The user is not logged in, send back an empty object
       res.status(401).json({});
     } else {
       // Otherwise send back the user's media and id
       res.json({
-        id: req.user.id,
-        files : req.user.files
+        mediaName: req.user.mediaName,
+        mediaLink : [req.user.mediaLinks]
       });
     }
   });
