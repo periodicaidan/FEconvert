@@ -1,27 +1,26 @@
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define("User", {
-     id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true,
-      primaryKey: true
-    },
-    videoname: {
+  var Media = sequelize.define("Media", {
+    mediaName: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
     },
-    videolink: {
+    mediaLink: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
-    },
-    // The uuid userlink cannot be null
-    userlink: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: false
     }
   });
-  return User;
+
+  Media.associate = function(models) {
+    // We're saying that a Media should belong to an User
+    // A Media can't be created without an Author due to the foreign key constraint
+    Media.belongsTo(models.User, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
+  };
+
+  return Media;
 };
