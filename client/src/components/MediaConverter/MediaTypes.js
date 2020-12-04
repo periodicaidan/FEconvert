@@ -24,7 +24,7 @@ const audio = {
 };
 
 const image = {
-  'gif': new MediaType('Graphics Interchange Format', 'GIF', ['image', 'gif']),
+  'gif': new MediaType('Graphics Interchange Format', 'GIF', 'gif', ['image', 'gif']),
   'apng': new MediaType('Animated PNG', 'APNG', 'apng', ['image', 'apng']),
 };
 
