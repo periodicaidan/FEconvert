@@ -12,10 +12,10 @@ module.exports = function(app) {
             res.status(401).json({});
         } else {
             singleUpload(req, res, function(err) {
-                return res.json({ 'imageUrl': req.file.location })
+                return res.json({ 'mediaUrl': req.file.location })
             });
         }
-    })
+    });
 
     app.get("/api/user-media", function(req, res) {
         if (!req.user) {
