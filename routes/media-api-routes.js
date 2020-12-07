@@ -1,6 +1,6 @@
 // S3 ROUTES
 const upload = require("../services/file-upload");
-const singleUpload = upload.single('image');
+const singleUpload = upload.single('media');
 const db = require("../models");
 
 
