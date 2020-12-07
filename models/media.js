@@ -12,15 +12,15 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  Media.associate = function(models) {
-    // We're saying that a Media should belong to an User
-    // A Media can't be created without an Author due to the foreign key constraint
-    Media.belongsTo(models.User, {
-      foreignKey: {
-        allowNull: false
-      }
-    });
-  };
+  // Media.associate = function(models) {
+  //   // We're saying that a Media should belong to an User
+  //   // A Media can't be created without an Author due to the foreign key constraint
+  //   Media.belongsTo(models.User, {
+  //     foreignKey: {
+  //       allowNull: false
+  //     }
+  //   });
+  // };
 
   return Media;
 };
