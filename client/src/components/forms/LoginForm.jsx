@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import FormField from './FormField';
 
+const LOGIN_ENDPOINT = '/api/login';
+
 export default function SignupForm() {
   const [fields, setFields] = useState({
     username: '',
@@ -12,6 +14,19 @@ export default function SignupForm() {
 
   const handleFormSubmit = e => {
     e.preventDefault();
+
+    fetch({
+      url: LOGIN_ENDPOINT,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: fields
+    })
+      .then(res => {
+        console.log('Logged in!')
+      })
+      .catch(console.error);
   }
 
   const formIsValid = () => 
