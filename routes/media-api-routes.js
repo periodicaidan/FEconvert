@@ -23,12 +23,13 @@ module.exports = function(app) {
             // The user is not logged in, send back an empty object
             res.status(401).json({});
         } else {
-            let query = {};
-            if (req.query.UserId) {
-                query.UserId = req.query.User_Id;
-            }
+            let query = req.user.id;
+            
+            
             db.Media.findAll({
-                where: query
+                where: {
+                    UserId: query
+                }
             }).then(function(dbMedia) {
                 res.json(dbMedia);
             });

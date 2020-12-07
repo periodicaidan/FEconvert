@@ -1,35 +1,3 @@
-// const aws = require('aws-sdk');
-// const multer = require('multer');
-// const multerS3 = require('multer-s3');
-
-// aws.config.update({
-// 	secretAccessKey: process.env.AWS_SECRET_ACCESS,
-// 	accessKeyId: process.env.AWS_ACCESS_KEY,
-// 	region: 'us-east-2'
-// });
-
-// const s3 = new aws.S3();
-
-
-// const upload = multer({
-// 	storage: multerS3({
-// 		s3: s3,
-// 		bucket: 'summermute-fempeg',
-// 		metadata: function (req, file, cb) {
-// 			cb(null, {fielName: file.fieldname});
-// 		},
-// 		key: function (req, file, cb) {
-// 			cb(null, Date.now(),toString())
-// 		}
-// 	})
-// });
-
-// module.exports = upload;
-
-
-///////////////////////////////
-
-// import { media as Media } from '../models';
 const db = require("../models");
 const aws = require('aws-sdk');
 const fs = require('fs');
@@ -67,7 +35,6 @@ function upload(req, res) {
             const locationUrl = data.Location;
             let newMedia = db.Media
                 .create({
-                    // id: req.user.id,
                     mediaName: req.file.originalname,
                     mediaLink: "https://summermute-fempeg.s3.us-east-2.amazonaws.com/" + req.user.username + "/" + req.file.originalname,
                     UserId: req.user.id
