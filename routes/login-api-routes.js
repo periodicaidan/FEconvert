@@ -1,7 +1,5 @@
 // Requiring our models and passport as we've configured it
 const db = require("../models");
-const upload = require("../services/file-upload");
-const singleUpload = upload.single('image');
 const passport = require("../config/passport");
 
 module.exports = function(app) {
@@ -41,7 +39,8 @@ module.exports = function(app) {
     } else {
       // Otherwise send back the user's email and id
       res.json({
-        username: req.body.username,
+        id: req.user.id,
+        username: req.user.username,
         email: req.user.email
       });
     }
