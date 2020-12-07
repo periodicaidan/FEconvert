@@ -54,6 +54,7 @@ export default function MediaConverter(props) {
   const [inputFile, setInputFile] = useState();
   const [outputFile, setOutputFile] = useState();
   const [convertOptions, setConvertOptions] = useState();
+  let convertOptionsSubscription;
 
   useEffect(() => {
     if (!ffmpegState.ready) {
@@ -64,9 +65,9 @@ export default function MediaConverter(props) {
   }, []);
 
   useEffect(() => {
-    const convertOptionsSubscription = convertOptionsSubject.subscribe(setConvertOptions);
+    convertOptionsSubscription = convertOptionsSubject.subscribe(setConvertOptions);
 
-    return convertOptionsSubscription.unsubscribe;
+    return () => convertOptionsSubscription.unsubscribe();
   }, []);
 
   const handleFileUpload = e => {
