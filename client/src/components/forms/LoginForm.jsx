@@ -5,7 +5,7 @@ const LOGIN_ENDPOINT = '/api/login';
 
 export default function SignupForm() {
   const [fields, setFields] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -21,7 +21,10 @@ export default function SignupForm() {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(fields)
+      body: JSON.stringify({
+        email: fields.email,
+        password: fields.password
+      })
     })
       .then(res => {
         if (res.status === 200) {
@@ -32,16 +35,16 @@ export default function SignupForm() {
   }
 
   const formIsValid = () => 
-    fields.username !== '' && fields.password !== '';
+    fields.email !== '' && fields.password !== '';
 
   return <> 
     <h2 className="title is-4">Log In</h2>
     <form onSubmit={handleFormSubmit}>
       <FormField 
-        label="Username"
+        label="Email"
         icon="user"
-        value={fields.username}
-        onChange={e => setField('username', e.target.value)}
+        value={fields.email}
+        onChange={e => setField('email', e.target.value)}
         spellCheck={false}
       />
 
