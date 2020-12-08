@@ -10,9 +10,9 @@ function mediaTypeToOptionElement(key, mediaType) {
 }
 
 export default function ConvertOptions({ onSet }) {
-  const [options, optionsDispatcher] = useReducer((_, action) => {
+  const [options, optionsDispatcher] = useReducer((state, action) => {
     const newState = {
-      ...convertOptionsSubject.value,
+      ...state,
       ...action,
     };
     convertOptionsSubject.next(newState);
@@ -25,59 +25,115 @@ export default function ConvertOptions({ onSet }) {
 
   const [inputMediaNs, ] = inputMediaType.split('/');
 
+
   switch (inputMediaNs) {
     case 'video':
-      return <VideoConvertOptions dispatcher={optionsDispatcher} />;
+      return <VideoConvertOptions />
+
     case 'audio':
-      return <AudioConvertOptions />;
+      return <></>;
+
     case 'image':
-      return <ImageConvertOptions />;
+      return <ImageConvertOptions />
+      
     default:
       return null;
   }
 }
 
-function VideoConvertOptions({ dispatcher }) {
+function VideoConvertOptions() {
+  const [outputMediaNs, setOutputMediaNs] = useState('video');
+
   return <>
     <div className="field">
-      <div className="control">
-        <div className="select">
-          <select onChange={e => dispatcher({ mediaType: MediaTypes[e.target.value] })}>
-            <option value="uncompressed">Uncompressed</option> 
-            <optgroup label="Image">
-              {Object.entries(MediaTypes.image()).map(entry => mediaTypeToOptionElement(...entry))}
-            </optgroup>
-            <optgroup label="Video">
-              {Object.entries(MediaTypes.video()).map(entry => mediaTypeToOptionElement(...entry))}
-            </optgroup>
-            <optgroup label="Audio">
-              {Object.entries(MediaTypes.audio()).map(entry => mediaTypeToOptionElement(...entry))}
-            </optgroup>
-          </select>
-        </div>
+      <div className="select">
+        <select defaultValue={outputMediaNs} onChange={e => setOutputMediaNs(e.target.value)}>
+          <VideoOption />
+          <AudioOption />
+          <ImageOption />
+        </select>
       </div>
     </div>
 
-    <div className="field">
-      <label className="checkbox">
-        <input type="checkbox" onChange={e => dispatcher({ reencodeVideo: e.target.checked })}/>
-        Reencode Video
-      </label>  
-    </div>
-
-    <div className="field">
-      <label className="checkbox">
-        <input type="checkbox" onChange={e => dispatcher({ reencodeAudio: e.target.checked })} />
-        Reencode Audio
-      </label>
-    </div>
+    {
+      {
+        'video': <OutputVideoFormats />,
+        'audio': <OutputAudioFormats />,
+        'image': <OutputImageFormats />
+      }[outputMediaNs]
+    }
   </>;
 }
 
 function AudioConvertOptions() {
-  return <></>;
+  return <>
+    <OutputAudioFormats />
+  </>;
 }
 
 function ImageConvertOptions() {
-  return <></>;
+  const [outputMediaNs, setOutputMediaNs] = useState('image');
+
+  return <>
+    <div className="field">
+      <div className="select">
+        <select defaultValue={outputMediaNs} onChange={e => setOutputMediaNs(e.target.value)}>
+          <ImageOption />
+          <VideoOption />
+        </select>
+      </div>
+    </div>
+
+    {
+      {
+        'video': <OutputVideoFormats />,
+        'image': <OutputImageFormats />
+      }[outputMediaNs]
+    }
+  </>;
 }
+
+function OutputVideoFormats() {
+  return (
+    <div className="field">
+      <div className="select">
+        <select>
+          {Object.entries(MediaTypes.video()).map(([k, v]) => mediaTypeToOptionElement(k, v))}
+        </select>
+      </div>
+    </div>
+  )
+}
+
+function OutputAudioFormats() {
+  return (
+    <div className="field">
+      <div className="select">
+        <select>
+          {Object.entries(MediaTypes.audio()).map(([k, v]) => mediaTypeToOptionElement(k, v))}
+        </select>
+      </div>
+    </div>
+  )
+}
+
+function OutputImageFormats() {
+  return (
+    <div className="field">
+      <div className="select">
+        <select>
+          {Object.entries(MediaTypes.image()).map(([k, v]) => mediaTypeToOptionElement(k, v))}
+        </select>
+      </div>
+    </div>
+  )
+}
+
+const VideoOption = () => 
+  <option value="video">Video</option>;
+
+const AudioOption = () => 
+  <option value="audio">Audio</option>;
+
+const ImageOption = () => 
+  <option value="image">Image</option>;
