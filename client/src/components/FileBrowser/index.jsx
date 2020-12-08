@@ -34,7 +34,7 @@ export default function FileBrowser() {
         </header>
         <div className="card-content">
           {files && files?.length > 0
-            ? files.map(f => <FileTile fileName={f.mediaName} mediaType={MediaTypes[getLastEl(f.mediaName.split('.'))]} />)
+            ? files.map(f => <FileTile fileName={f.mediaName} mediaType={MediaTypes[getLastEl(f.mediaName.split('.'))]} mediaLink={f.mediaLink} />)
             : "You have no files!"
           }
         </div>
