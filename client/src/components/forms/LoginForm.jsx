@@ -20,7 +20,7 @@ export default function SignupForm() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: fields
+      body: JSON.stringify(fields)
     })
       .then(res => {
         if (res.status === 200) {
