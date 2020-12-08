@@ -29,11 +29,12 @@ const ffmpegFlags = {
 };
 
 /**
+ * @param {FFmpeg} ffmpeg
  * @param {File} inputFile 
  * @param {any} param1
  * @returns {[ string, string ]}
  */
-export async function convert(inputFile, { 
+export async function convert(ffmpeg, inputFile, { 
     outputMediaType, 
     preserveAudioCodec, 
     preserveVideoCodec,
@@ -101,7 +102,6 @@ async function videoOrImageToFrames(inputFile, {
     ffmpeg.FS('writeFile', inputFile.name, await fetchFile(inputFile));
     ffmpeg.FS('mkdir', outputDir);
     ffmpeg.run(...ffmpegCommand);
-
 }
 
 /**
@@ -112,5 +112,5 @@ async function videoOrImageToFrames(inputFile, {
  * @param {File} inputFile 
  */
 function imageToVideo(inputFile) {
-
+    
 }

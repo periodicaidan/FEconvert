@@ -1,6 +1,8 @@
-import React, { useState, useReducer, useContext } from 'react';
+import React, { useState, useReducer, useContext, createContext } from 'react';
 import MediaTypes, { MediaType, InputMediaContext } from './MediaTypes';
 import { convertOptionsSubject } from './ConvertOptionsSubject';
+
+const OptionsDispatcherContext = createContext();
 
 /**
  * @param {MediaType} mediaType 
@@ -9,7 +11,7 @@ function mediaTypeToOptionElement(key, mediaType) {
   return <option value={key}>{mediaType.fullName} ({mediaType.abbreviation})</option>;
 }
 
-export default function ConvertOptions({ onSet }) {
+export default function ConvertOptions() {
   const [options, optionsDispatcher] = useReducer((state, action) => {
     const newState = {
       ...state,
@@ -28,13 +30,25 @@ export default function ConvertOptions({ onSet }) {
 
   switch (inputMediaNs) {
     case 'video':
-      return <VideoConvertOptions />
+      return (
+        <OptionsDispatcherContext.Provider value={optionsDispatcher}>
+          <VideoConvertOptions />
+        </OptionsDispatcherContext.Provider>
+      )
 
     case 'audio':
-      return <></>;
+      return (
+        <OptionsDispatcherContext.Provider value={optionsDispatcher}>
+          <AudioConvertOptions />
+        </OptionsDispatcherContext.Provider>
+      );
 
     case 'image':
-      return <ImageConvertOptions />
+      return (
+        <OptionsDispatcherContext.Provider value={optionsDispatcher}>
+          <ImageConvertOptions />
+        </OptionsDispatcherContext.Provider>
+      )
       
     default:
       return null;
@@ -43,11 +57,35 @@ export default function ConvertOptions({ onSet }) {
 
 function VideoConvertOptions() {
   const [outputMediaNs, setOutputMediaNs] = useState('video');
+  const dispatcher = useContext(OptionsDispatcherContext);
+
+  const handleSetOutputMediaNs = (e) => {
+    setOutputMediaNs(e.target.value);
+    switch (e.target.value) {
+      case 'video':
+        dispatcher({
+          preserveVideoCodec: true,
+          preserveAudioCodec: true,
+          removeAudio: false,
+          removeVideo: false,
+          uncompressed: false
+        });
+        break;
+
+      case 'audio':
+        dispatcher({
+          preserveAudioCodec: true,
+          removeVideo: true,
+          uncompressed: false,
+        });
+        break;
+    }
+  };
 
   return <>
     <div className="field">
       <div className="select">
-        <select defaultValue={outputMediaNs} onChange={e => setOutputMediaNs(e.target.value)}>
+        <select defaultValue={outputMediaNs} onChange={handleSetOutputMediaNs}>
           <VideoOption />
           <AudioOption />
           <ImageOption />
@@ -94,10 +132,13 @@ function ImageConvertOptions() {
 }
 
 function OutputVideoFormats() {
+  const dispatcher = useContext(OptionsDispatcherContext);
+  dispatcher({ outputMediaType: MediaTypes.mp4 });
+
   return (
     <div className="field">
       <div className="select">
-        <select>
+        <select defaultValue="mp4" onChange={e => dispatcher({ outputMediaType: MediaTypes[e.target.value] })}>
           {Object.entries(MediaTypes.video()).map(([k, v]) => mediaTypeToOptionElement(k, v))}
         </select>
       </div>
@@ -106,10 +147,12 @@ function OutputVideoFormats() {
 }
 
 function OutputAudioFormats() {
+  const dispatcher = useContext(OptionsDispatcherContext);
+  dispatcher({ outputMediaType: MediaTypes.mp3 })
   return (
     <div className="field">
       <div className="select">
-        <select>
+        <select defaultValue="mp3" onChange={e => dispatcher({ outputMediaType: MediaTypes[e.target.value] })}>
           {Object.entries(MediaTypes.audio()).map(([k, v]) => mediaTypeToOptionElement(k, v))}
         </select>
       </div>
@@ -118,10 +161,12 @@ function OutputAudioFormats() {
 }
 
 function OutputImageFormats() {
+  const dispatcher = useContext(OptionsDispatcherContext);
+  dispatcher({ outputMediaType: MediaTypes.gif });
   return (
     <div className="field">
       <div className="select">
-        <select>
+        <select defaultValue="gif" onChange={e => dispatcher({ outputMediaType: MediaTypes[e.target.value] })}>
           {Object.entries(MediaTypes.image()).map(([k, v]) => mediaTypeToOptionElement(k, v))}
         </select>
       </div>

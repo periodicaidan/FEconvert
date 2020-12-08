@@ -30,11 +30,16 @@ export default function FileBrowser() {
           </h3>
         </header>
         <div className="card-content">
-          <FileTile fileName="bruh_sound_effect_2.wav" mediaType={MediaTypes.wav} />
-          <FileTile fileName="jimin_fancam_uwu.mkv" mediaType={MediaTypes.mkv} />
-          <FileTile fileName="trump_WRONG.gif" mediaType={MediaTypes.gif} />
+          {files.length > 0
+            ? files.map(f => <FileTile fileName={f.mediaName} mediaType={MediaTypes[getLastEl(f.mediaName.split('.'))]} />)
+            : "You have no files!"
+          }
         </div>
       </div>
     </NicelySpaced>  
   );
+}
+
+function getLastEl(arr) {
+  return arr[arr.length - 1]
 }

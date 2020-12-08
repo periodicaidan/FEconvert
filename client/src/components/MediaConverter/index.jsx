@@ -5,6 +5,7 @@ import ConvertOptions from './ConvertOptions';
 import { InputMediaContext } from './MediaTypes';
 import { convertOptionsSubject } from './ConvertOptionsSubject';
 import NicelySpaced from '../NicelySpaced';
+import { convert } from './convert';
 
 const ffmpeg = createFFmpeg({ log: true });
 
@@ -53,6 +54,7 @@ export default function MediaConverter(props) {
   });
   const [inputFile, setInputFile] = useState();
   const [outputFile, setOutputFile] = useState();
+  const [outputFileName, setOutputFileName] = useState('');
   const [convertOptions, setConvertOptions] = useState();
   let convertOptionsSubscription;
 
@@ -86,7 +88,9 @@ export default function MediaConverter(props) {
     e.preventDefault();
 
     setFFmpegState({ ...ffmpegState, working: true });
-    setOutputFile(await convertToGif(inputFile));
+    const [newOutputFileName, newOutputFile] = await convert(ffmpeg, inputFile, convertOptionsSubject.value);
+    setOutputFile(newOutputFile);
+    setOutputFileName(newOutputFileName)
     setFFmpegState({ ...ffmpegState, working: false });
   }
 
@@ -134,7 +138,7 @@ export default function MediaConverter(props) {
                   <a 
                     href={outputFile} 
                     role="button" 
-                    download={replaceFileExtensionWith('gif', inputFile.name)} 
+                    download={outputFileName} 
                     className="button is-large is-link"
                   >
                     Download!
