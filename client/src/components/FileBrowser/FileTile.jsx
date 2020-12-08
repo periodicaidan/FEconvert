@@ -13,11 +13,11 @@ export default function FileTile({ fileName, mediaType, mediaLink }) {
       </div>
       <div className="media-right">
         <div className="buttons">
-          <button className="button is-link">
+          <a href={mediaLink} className="button is-link">
             <div className="icon">
               <i className="fas fa-lg fa-download"></i>
             </div>
-          </button>
+          </a>
           <button className="button is-danger">
             <div className="icon">
               <i className="fas fa-lg fa-trash-alt"></i>
