@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import FileTile from './FileTile';
 import MediaTypes from '../MediaConverter/MediaTypes';
 import NicelySpaced from '../NicelySpaced';
@@ -23,6 +23,9 @@ export default function FileBrowser() {
 
   return (
     <NicelySpaced width={8}>
+      <div className="block">
+        <InlineFileUploadForm />
+      </div>
       <div className="card">
         <header className="card-header has-background-info">
           <h3 className="card-header-title title is-3 has-text-white">
@@ -30,7 +33,7 @@ export default function FileBrowser() {
           </h3>
         </header>
         <div className="card-content">
-          {files.length > 0
+          {files && files?.length > 0
             ? files.map(f => <FileTile fileName={f.mediaName} mediaType={MediaTypes[getLastEl(f.mediaName.split('.'))]} />)
             : "You have no files!"
           }
@@ -42,4 +45,52 @@ export default function FileBrowser() {
 
 function getLastEl(arr) {
   return arr[arr.length - 1]
+}
+
+function InlineFileUploadForm() {
+  const [file, setFile] = useState();
+
+  const handleFormSubmit = e => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('newMedia', file);
+
+    fetch('/api/media_upload', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      body: formData
+    })
+      .then(console.log)
+      .catch(console.error)
+  }
+
+  return (
+    <form onSubmit={handleFormSubmit}>
+      <div className="field has-addons">
+        <div className="control">
+          <div className="file has-name">
+            <label className="file-label">
+              <input type="file" className="file-input" onChange={e => setFile(e.target.files?.item(0))} />
+              <span className="file-cta">
+                <span className="file-label">
+                  Upload...
+                </span>
+              </span>
+            </label>
+            <span className="file-name">
+              {file?.name ?? 'No file selected'}
+            </span>
+          </div>
+        </div>
+        <div className="control">
+          <button type="submit" class="button is-link" disabled={!file}>
+            <i className="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  )
 }
