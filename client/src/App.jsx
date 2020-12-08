@@ -5,6 +5,7 @@ import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
 import SigninPage from './pages/SigninPage';
 import FileBrowserPage from './pages/FileBrowserPage';
+import FileDetailsPage from './pages/FileDetailsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route exact path="/about" component={AboutPage} />
         <Route exact path="/signin" component={SigninPage} />
         <Route path="/files" component={FileBrowserPage} />
+        <Route path="/files/:userId/:fileName" component={FileDetailsPage} />
       </Switch>
     </BrowserRouter>
   );
