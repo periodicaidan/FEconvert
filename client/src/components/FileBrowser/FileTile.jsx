@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function FileTile({ fileName, mediaType }) {
+export default function FileTile({ fileName, mediaType, mediaLink }) {
   
   return (
     <div className="media is-flex is-align-items-center">
@@ -12,11 +12,18 @@ export default function FileTile({ fileName, mediaType }) {
         <h2 className="subtitle is-4">{mediaType.fullName}</h2>
       </div>
       <div className="media-right">
-        <button className="button is-danger">
-          <div className="icon">
-            <i className="fas fa-lg fa-trash-alt"></i>
-          </div>
-        </button>
+        <div className="buttons">
+          <button className="button is-link">
+            <div className="icon">
+              <i className="fas fa-lg fa-download"></i>
+            </div>
+          </button>
+          <button className="button is-danger">
+            <div className="icon">
+              <i className="fas fa-lg fa-trash-alt"></i>
+            </div>
+          </button>
+        </div> 
       </div>
     </div>
   );
