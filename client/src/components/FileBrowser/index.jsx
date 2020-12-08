@@ -54,8 +54,7 @@ function InlineFileUploadForm() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('key', 'newMedia');
-    formData.append('value', file);
+    formData.append('newMedia', file);
 
     fetch('/api/media_upload', {
       method: 'POST',
