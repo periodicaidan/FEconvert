@@ -15,8 +15,7 @@ export default function SignupForm() {
   const handleFormSubmit = e => {
     e.preventDefault();
 
-    fetch({
-      url: LOGIN_ENDPOINT,
+    fetch(LOGIN_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -24,7 +23,9 @@ export default function SignupForm() {
       body: fields
     })
       .then(res => {
-        console.log('Logged in!')
+        if (res.status === 200) {
+          window.location.replace('/files');
+        }
       })
       .catch(console.error);
   }

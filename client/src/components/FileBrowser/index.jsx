@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FileTile from './FileTile';
-import MediaTypes, { MediaType } from '../MediaConverter/MediaTypes';
+import MediaTypes from '../MediaConverter/MediaTypes';
 import NicelySpaced from '../NicelySpaced';
 
-/**
- * @param {{files: {fileName: string, mediaType: MediaType}}[]} param0 
- */
-export default function FileBrowser({ files }) {
+const USER_MEDIA_ENDPOINT = '/api/user_media';
+
+export default function FileBrowser() {
+  // Fetch the user's file metadata
+  let files;
+  useEffect(() => {
+    fetch(USER_MEDIA_ENDPOINT, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        files = json;
+        console.log(json);
+      });
+  }, []);
+
   return (
     <NicelySpaced width={8}>
       <div className="card">
