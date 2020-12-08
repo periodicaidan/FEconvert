@@ -58,9 +58,6 @@ function InlineFileUploadForm() {
 
     fetch('/api/media_upload', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
       body: formData
     })
       .then(console.log)
